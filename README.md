@@ -1,41 +1,36 @@
 # scanmongodb
 
-Fast MongoDB data directory scanner. Finds MongoDB database files (WiredTiger/MMAPv1) across your filesystem.
+Fast MongoDB data directory scanner. Finds MongoDB database files (WiredTiger/MMAPv1) for v3/v4/v5.
 
-## VPS One-liner
+## Download & Run
+
+**One-liner** — copy paste vào VPS và chạy luôn:
 
 ```bash
-# AMD64
-curl -sL https://github.com/YOUR_USER/scanmongodb/releases/latest/download/scanmongodb-linux-amd64 -o /tmp/scanmongodb && chmod +x /tmp/scanmongodb && /tmp/scanmongodb /
+# AMD64 (hầu hết VPS)
+curl -sL https://github.com/richardplg2/scanmongodb/releases/download/v1.0.0/scanmongodb-linux-amd64 -o /tmp/scanmongodb && chmod +x /tmp/scanmongodb
 
-# ARM64
-curl -sL https://github.com/YOUR_USER/scanmongodb/releases/latest/download/scanmongodb-linux-arm64 -o /tmp/scanmongodb && chmod +x /tmp/scanmongodb && /tmp/scanmongodb /
+# ARM64 (AWS Graviton, Oracle ARM...)
+curl -sL https://github.com/richardplg2/scanmongodb/releases/download/v1.0.0/scanmongodb-linux-arm64 -o /tmp/scanmongodb && chmod +x /tmp/scanmongodb
 ```
 
 ## Usage
 
 ```bash
-# Scan specific path
-./scanmongodb /var/lib/mongodb
+# Scan toàn bộ filesystem (cần sudo để đọc mọi thư mục)
+sudo /tmp/scanmongodb /
 
-# Scan entire filesystem
-sudo ./scanmongodb /
+# Scan 1 path cụ thể
+/tmp/scanmongodb /var/lib/mongodb
 
-# JSON output (for scripting)
-./scanmongodb -json /data
+# Scan nhiều path
+/tmp/scanmongodb /data /var/lib /opt
 
-# Multiple paths
-./scanmongodb /data /var/lib /opt
-```
+# Output JSON (tiện cho scripting)
+/tmp/scanmongodb -json /
 
-## Build
-
-```bash
-# Local
-go build -o scanmongodb .
-
-# Cross-compile for Linux
-make build-linux
+# Tuỳ chỉnh số workers (mặc định = CPU * 2)
+/tmp/scanmongodb -workers 16 /
 ```
 
 ## Output
@@ -51,4 +46,10 @@ Found 1 MongoDB data directory(ies):
   Databases: admin, config, myapp
 
 Scanned 84521 dirs in 1.2s
+```
+
+## Cleanup
+
+```bash
+rm /tmp/scanmongodb
 ```
